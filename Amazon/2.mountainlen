@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int longestMountain(vector<int>& arr) {
+        int s=arr.size();
+        int len=0;
+        for(int i=1;i<s-1;i++){
+            if(arr[i]>arr[i-1]&&arr[i]>arr[i+1]){
+                int start=i;
+                int end=i;
+                while(start>0&&arr[start]>arr[start-1]) start--;
+                while(end<s-1&&arr[end]>arr[end+1]) end++;
+                len=max(len,end-start+1);
+            }
+        }
+        return len;
+    }
+};
