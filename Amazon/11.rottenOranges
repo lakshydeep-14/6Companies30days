@@ -1,0 +1,72 @@
+class Solution {
+public:
+    int orangesRotting(vector<vector<int>>& grid) {
+        queue<pair<int,int> > q; 
+        
+        int n=grid.size(),m=grid[0].size(),ans=0,ones=0,twos=0;
+        
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]==2){
+                    twos++;                    
+                    q.push(make_pair(i,j));
+                }
+                else if(grid[i][j]==1)ones++; 
+            }
+        }
+        
+        if(ones==0)return 0; 
+        else if(twos==0)return -1;
+        
+        int cnt1=twos,cnt2=0;
+        while(!q.empty()){
+            pair<int,int> p=q.front();
+            q.pop();
+            int y=p.first,x=p.second;
+            cnt1--;
+            if(y>0){
+                if(grid[y-1][x]==1){
+                    cnt2++;
+                    grid[y-1][x]=2;
+                    ones--; 
+                    q.push(make_pair(y-1,x));
+                }
+            }
+            if(y<n-1){
+                if(grid[y+1][x]==1){
+                    cnt2++;
+                    grid[y+1][x]=2;
+                    ones--;
+                    q.push(make_pair(y+1,x));
+                }
+            }
+            if(x>0){
+                if(grid[y][x-1]==1){
+                    cnt2++;
+                    grid[y][x-1]=2;
+                    ones--;
+                    q.push(make_pair(y,x-1));
+                }
+            }
+            if(x<m-1){
+                if(grid[y][x+1]==1){
+                    cnt2++;
+                    ones--;
+                    grid[y][x+1]=2;
+                    q.push(make_pair(y,x+1));
+                }
+            }
+            if(cnt1==0){
+                ans++;
+                cnt1=cnt2;
+                cnt2=0;
+            }
+        }
+        
+        if(ones>0)return -1; 
+        
+        
+        return ans-1;
+        
+    }
+};
